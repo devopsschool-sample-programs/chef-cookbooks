@@ -6,6 +6,11 @@
 
 #node.default['devopsschool']['message'] = 'Hello People'
 
+#How to call another recipe from default.rb
+
+include_recipe '::log'
+include_recipe 'dbserver'
+
 package 'httpd'
 
 file '/var/www/html/index.html' do
@@ -22,11 +27,6 @@ end
 
 template '/var/www/html/index.html' do
   source 'index.html.erb'
-end
-
-cookbook_file '/opt/deploy.sh' do
-  source 'deploy.sh'
-  action :create
 end
 
 
