@@ -14,7 +14,7 @@ include_recipe 'dbserver'
 package 'httpd'
 
 file '/var/www/html/index.html' do
-  content "Welcome to Chef Class - cookbooks"
+  content "Welcome to Chef Class - cookbooks - change1"
 end
 
 service 'httpd' do
@@ -25,8 +25,19 @@ log "Welcome to Chef, #{node['devopsschool']['message']}'!" do
   level :info
 end
 
-template '/var/www/html/index.html' do
+template '/var/www/html/index-1.html' do
   source 'index.html.erb'
 end
+
+template '/etc/httpd/conf/httpd.conf' do
+  source 'httpd.conf.erb'
+  notifies :restart, 'service[httpd]', :delayed
+end
+
+file '/var/www/html/index-2.html' do
+  content "Welcome to Chef Class - cookbooks - index2"
+  subscribes :delete, 'file[/var/www/html/index.html]', :immediately
+end
+
 
 
